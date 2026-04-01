@@ -45,6 +45,12 @@ func (r *WalletRepository) GetByID(ctx context.Context, exec Executor, id string
 	return w, nil
 }
 
+// DB returns the underlying database connection, useful when callers need an
+// Executor outside of a transaction.
+func (r *WalletRepository) DB() *sql.DB {
+	return r.db
+}
+
 func (r *WalletRepository) UpdateBalance(ctx context.Context, exec Executor, id string, newBalance int64, updatedAt time.Time) error {
 	res, err := exec.ExecContext(ctx,
 		`UPDATE wallets SET balance = ?, updated_at = ? WHERE id = ?`,
